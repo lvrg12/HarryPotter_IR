@@ -1,36 +1,51 @@
+import unidecode
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
 
-# tokenization and filtration of document
+
+# preprocess of document
+def preprocess( doc ):
+    preprocessed = tokenize(doc)
+    preprocessed = normalize(preprocessed)
+    preprocessed = lemmatize(preprocessed)
+    preprocessed = stem(preprocessed)
+
+    return preprocessed
+
+# tokenization of document
 def tokenize( doc ):
 
     # tokenizing
     tokenized = word_tokenize(doc)
 
+    return list(set(tokenized))
+
+# normalization and filtration of document
+def normalize( tokenized ):
+
+    #normalizing
+    # normalized = [ unidecode.unidecode(w.decode('utf8')) for w in tokenized ]
+
     # remove punctuations
-    tokenized = [ word for word in tokenized if word.isalpha() ]
+    normalized = [ word for word in tokenized if word.isalpha() ]
 
     # removing stopwords
     stop_words = set(stopwords.words('english'))
-    filtered = [ w for w in tokenized if not w in stop_words ]
-    filtered = []
+    filtered = [ w for w in normalized if w not in stop_words ]
 
-    for w in tokenized:
-        if w not in stop_words:
-            filtered.append(w)
+    return list(set(filtered))
 
-    return filtered
-
-#lemmatization of document
+# lemmatization of document
 def lemmatize( tokenized ):
     lemmatizer = WordNetLemmatizer()
-    lemmatized = [ lemmatizer.lemmatize(word) for word in tokenized ]
-    return lemmatized
+    lemmatized = [ lemmatizer.lemmatize(w) for w in tokenized ]
+    return list(set(lemmatized))
 
-#stemming of document
+# stemming of document
 def stem( tokenized ):
-    porter = PorterStemmer()
-    stemmed = [ porter.stem(word) for word in tokenized ]
-    return stemmed
+
+    stemmer = PorterStemmer()
+    stemmed = [ str(stemmer.stem(w)) for w in tokenized ]
+    return list(set(stemmed))

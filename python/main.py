@@ -1,19 +1,20 @@
 import os
-import codecs
 import preprocessing as pp
 
 def main():
 
     for name in os.listdir("../dataset"):
         
-        doc = codecs.open("../dataset/" + name, 'r', 'utf-8-sig').read()
+        doc = open("../dataset/" + name).read()
 
-        print(name)
-        print("Tokenization\t" + str(len(pp.tokenize(doc))) )
-        print("Lemmatizaton\t" + str(len(pp.lemmatize(doc))) )
-        print("Stemming\t" + str(len(pp.stem(doc))) )
+        ignore = ["doc29.txt", "doc51.txt", "doc56.txt", "doc57.txt", "doc61.txt"]
 
-        break
+        if( name in ignore ):
+            continue
+
+        print( name + "\t" + str(len(pp.preprocess(doc))) )
+        
+        #break
 
 
 if __name__ == "__main__":
