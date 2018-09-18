@@ -1,16 +1,16 @@
 import os
+import codecs
 import preprocessing as pp
 
 def main():
 
     for name in os.listdir("../dataset"):
         
-        doc = open("../dataset/" + name).read()
+        doc = codecs.open("../dataset/" + name, 'r', 'utf-8-sig').read()
 
         print(name)
         print("Tokenization\t" + str(len(pp.tokenize(doc))) )
-        print("Normalization\t" + str(len(pp.normalize(doc))) )
-        print("Lemmitizaton\t" + str(len(pp.lemmitize(doc))) )
+        print("Lemmatizaton\t" + str(len(pp.lemmatize(doc))) )
         print("Stemming\t" + str(len(pp.stem(doc))) )
 
         break
