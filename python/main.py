@@ -3,18 +3,29 @@ import preprocessing as pp
 
 def main():
 
+    doc = {}
+    n = 1
     for name in os.listdir("../dataset"):
         
-        doc = open("../dataset/" + name).read()
+        f = open("../dataset/" + name).read()
 
         ignore = ["doc29.txt", "doc51.txt", "doc56.txt", "doc57.txt", "doc61.txt"]
 
         if( name in ignore ):
             continue
 
-        print( name + "\t" + str(len(pp.preprocess(doc))) )
-        
-        #break
+        # 1. Pre-processing
+        doc[n] = pp.preprocess(f)
+        n = n + 1
+
+    print(doc[2])
+
+    # 2. Query
+    query = "raven"
+
+    # 3. Term Frequency
+
+
 
 
 if __name__ == "__main__":

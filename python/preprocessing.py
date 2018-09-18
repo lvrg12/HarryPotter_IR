@@ -10,7 +10,7 @@ def preprocess( doc ):
     preprocessed = tokenize(doc)
     preprocessed = normalize(preprocessed)
     preprocessed = lemmatize(preprocessed)
-    preprocessed = stem(preprocessed)
+    # preprocessed = stem(preprocessed)
 
     return preprocessed
 
@@ -20,7 +20,7 @@ def tokenize( doc ):
     # tokenizing
     tokenized = word_tokenize(doc)
 
-    return list(set(tokenized))
+    return tokenized
 
 # normalization and filtration of document
 def normalize( tokenized ):
@@ -35,17 +35,17 @@ def normalize( tokenized ):
     stop_words = set(stopwords.words('english'))
     filtered = [ w for w in normalized if w not in stop_words ]
 
-    return list(set(filtered))
+    return filtered
 
 # lemmatization of document
 def lemmatize( tokenized ):
     lemmatizer = WordNetLemmatizer()
     lemmatized = [ lemmatizer.lemmatize(w) for w in tokenized ]
-    return list(set(lemmatized))
+    return lemmatized
 
 # stemming of document
 def stem( tokenized ):
 
     stemmer = PorterStemmer()
     stemmed = [ str(stemmer.stem(w)) for w in tokenized ]
-    return list(set(stemmed))
+    return stemmed
