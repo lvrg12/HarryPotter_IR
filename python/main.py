@@ -1,5 +1,6 @@
 import os
 import preprocessing as pp
+import term_frequency as tf
 
 def main():
 
@@ -16,13 +17,26 @@ def main():
         # 1. Pre-processing
         doc[int(name.strip("doc").strip(".txt"))] = pp.preprocess(f)
 
-    print(doc[2])
 
     # 2. Query
-    query = "raven"
+    search = "raven dark play"
+    query = search.split(" ")
+
 
     # 3. Term Frequency
-    
+    pos = []
+    for q in query:
+        pos.append({})
+        x = len(pos) - 1
+        pos[x][q] = 0
+
+        for d in tf.documents_with(q,doc):
+            pos[x][q] = pos[x][q] + 1
+            pos[x][d] = tf.document_positions(doc[d],q)
+
+    print(pos)
+
+
 
 
 
