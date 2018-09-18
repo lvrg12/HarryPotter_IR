@@ -4,7 +4,6 @@ import preprocessing as pp
 def main():
 
     doc = {}
-    n = 1
     for name in os.listdir("../dataset"):
         
         f = open("../dataset/" + name).read()
@@ -15,8 +14,7 @@ def main():
             continue
 
         # 1. Pre-processing
-        doc[n] = pp.preprocess(f)
-        n = n + 1
+        doc[int(name.strip("doc").strip(".txt"))] = pp.preprocess(f)
 
     print(doc[2])
 
@@ -24,6 +22,7 @@ def main():
     query = "raven"
 
     # 3. Term Frequency
+    
 
 
 

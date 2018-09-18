@@ -10,7 +10,7 @@ def preprocess( doc ):
     preprocessed = tokenize(doc)
     preprocessed = normalize(preprocessed)
     preprocessed = lemmatize(preprocessed)
-    # preprocessed = stem(preprocessed)
+    preprocessed = stem(preprocessed)
 
     return preprocessed
 
