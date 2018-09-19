@@ -4,22 +4,15 @@ import term_frequency as tf
 
 def main():
 
+    # 1. Pre-processing
     doc = {}
     for name in os.listdir("../dataset"):
-        
         f = open("../dataset/" + name).read()
-
-        ignore = ["doc29.txt", "doc51.txt", "doc56.txt", "doc57.txt", "doc61.txt"]
-
-        if( name in ignore ):
-            continue
-
-        # 1. Pre-processing
-        doc[int(name.strip("doc").strip(".txt"))] = pp.preprocess(f)
+        doc[int(name.strip("hp").strip(".txt"))] = pp.preprocess(f)
 
 
     # 2. Query
-    search = "raven dark play"
+    search = "magic owl wand"
     query = search.split(" ")
 
 
@@ -35,10 +28,6 @@ def main():
             pos[x][d] = tf.document_positions(doc[d],q)
 
     print(pos)
-
-
-
-
 
 
 if __name__ == "__main__":
