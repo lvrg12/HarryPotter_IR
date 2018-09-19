@@ -1,5 +1,5 @@
-# EdgarAllanPoe_IR
-Information Retrieval Tool for an Edgar Allan Poe Dataset
+# HarryPotter_IR
+Information Retrieval Tool for a Harry Potter Chapter Summary Dataset
 
 
-Website: https://lvrg12.github.io/EdgarAllanPoe_IR/
+Website: https://lvrg12.github.io/HarryPotter_IR/
