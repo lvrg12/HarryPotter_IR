@@ -1,6 +1,8 @@
 import os
+import math
 import preprocessing as pp
 import term_frequency as tf
+import tfidf
 
 def main():
 
@@ -16,18 +18,37 @@ def main():
     query = search.split(" ")
 
 
-    # 3. Term Frequency
-    pos = []
+    # 3. TF and IDF
+    pos = {}
     for q in query:
-        pos.append({})
-        x = len(pos) - 1
-        pos[x][q] = 0
+        pos[q] = {}
 
         for d in tf.documents_with(q,doc):
-            pos[x][q] = pos[x][q] + 1
-            pos[x][d] = tf.document_positions(doc[d],q)
+            pos[q][d] = tf.document_positions(doc[d],q)
 
-    print(pos)
+    # a) Term Frequency
+    print("Term Frequency")
+    for t in query:
+        print(t, end="  ")
+        for d in pos[t]:
+            print( str(d) + ": " + str(tfidf.tf(t,d,pos)) + " ", end=" ")
+        print()
+
+    # a) Inverse Document Frequency
+    print("\nInverse Document Frequency")
+    for t in query:
+        print(t + "  " + str( tfidf.idf(len(doc),t,pos) ) )
+
+
+    # 4. TF-IDF
+    print("\nTF-IDF")
+    for d in doc:
+        print( str(d) + ": " + str( tfidf.tfidf(len(doc),d,query,pos) ) )
+
+            
+
+
+    # print(pos)
 
 
 if __name__ == "__main__":
