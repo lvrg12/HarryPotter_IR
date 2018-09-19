@@ -4,7 +4,10 @@ def tf(t,d,pos):
     return len(pos[t][d])
 
 def idf(N,t,pos):
-    return math.log10(N/len(pos[t]))
+    if( len(pos[t]) == 0 ):
+        return 0
+    else:
+        return math.log10(N/len(pos[t]))
 
 def tf_weight(d,t,pos):
     if( d in pos[t] ):

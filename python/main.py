@@ -3,6 +3,7 @@ import math
 import preprocessing as pp
 import term_frequency as tf
 import tfidf
+import vector_space_model as vsm
 
 def main():
 
@@ -14,9 +15,8 @@ def main():
 
 
     # 2. Query
-    search = "magic owl wand"
+    search = "magic owl wand study train school learn class fear teacher friend"
     query = search.split(" ")
-
 
     # 3. TF and IDF
     pos = {}
@@ -39,16 +39,26 @@ def main():
     for t in query:
         print(t + "  " + str( tfidf.idf(len(doc),t,pos) ) )
 
-
     # 4. TF-IDF
     print("\nTF-IDF")
     for d in doc:
         print( str(d) + ": " + str( tfidf.tfidf(len(doc),d,query,pos) ) )
 
-            
+    # 6. Vector Space
+    vector = {}
+    print("\nVector Space")
+    for d in doc:
+        vector[d] = vsm.vector(d,query,pos,len(doc))
+        print( str(d) + ": " + str( vector[d] ) )
 
-
-    # print(pos)
+    # 7. Cosine Similarity
+    print("\nCosine Similarity")
+    vector = vsm.normalize_vector(vector)
+    for d in doc:
+        for d2 in doc:
+            if d != d2:
+                print(round(vsm.cosine_similarity(vector[d],vector[d2]),2), end=" ")
+        print()                
 
 
 if __name__ == "__main__":
