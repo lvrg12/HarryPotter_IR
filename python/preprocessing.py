@@ -8,6 +8,7 @@ from nltk.stem.porter import PorterStemmer
 # preprocess of document
 def preprocess( doc ):
     preprocessed = tokenize(doc)
+    # print([w for w in preprocessed])
     preprocessed = normalize(preprocessed)
     preprocessed = lemmatize(preprocessed)
     preprocessed = stem(preprocessed)

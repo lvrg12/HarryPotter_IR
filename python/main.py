@@ -13,7 +13,6 @@ def main():
         f = open("../dataset/" + name).read()
         doc[int(name.strip("hp").strip(".txt"))] = pp.preprocess(f)
 
-
     # 2. Query
     search = "magic owl wand study train school learn class fear teacher friend"
     query = search.split(" ")
@@ -27,38 +26,54 @@ def main():
             pos[q][d] = tf.document_positions(doc[d],q)
 
     # a) Term Frequency
-    print("Term Frequency")
+    # print("Term Frequency")
+    # for t in query:
+    #     print(t, end="  ")
+    #     for d in pos[t]:
+    #         print( str(d) + ": " + str(tfidf.tf(t,d,pos)) + " ", end=" ")
+    #     print()
+
+    # arrtmp = [0] * 57
+    # for t in query:
+    #     print(t, end=",")
+    #     for d in range(len(arrtmp)):
+    #         if d in pos[t]:
+    #             print( str(tfidf.tf(t,d,pos)), end="," )
+    #         else:
+    #             print( end="0," )
+    #     print()
+
+    max_f = {}
     for t in query:
-        print(t, end="  ")
         for d in pos[t]:
-            print( str(d) + ": " + str(tfidf.tf(t,d,pos)) + " ", end=" ")
-        print()
+            max_f[t] = len(pos[t][d])
+
+
 
     # a) Inverse Document Frequency
-    print("\nInverse Document Frequency")
-    for t in query:
-        print(t + "  " + str( tfidf.idf(len(doc),t,pos) ) )
+    # print("\nInverse Document Frequency")
+    # for t in query:
+    #     print(t + "," + str( tfidf.idf(len(doc),t,pos) ) )
 
     # 4. TF-IDF
-    print("\nTF-IDF")
-    for d in doc:
-        print( str(d) + ": " + str( tfidf.tfidf(len(doc),d,query,pos) ) )
+    # print("\nTF-IDF")
+    # for d in doc:
+    #     print( str( tfidf.tfidf(len(doc),d,query,pos) ) )
 
     # 6. Vector Space
-    vector = {}
-    print("\nVector Space")
+    vector_space = {}
+    # print("\nVector Space")
     for d in doc:
-        vector[d] = vsm.vector(d,query,pos,len(doc))
-        print( str(d) + ": " + str( vector[d] ) )
+        vector_space[d] = vsm.vector(d,query,pos,len(doc),max_f)
+        # print( str(d) + ": " + str( vector[d] ) )
 
     # 7. Cosine Similarity
-    print("\nCosine Similarity")
-    vector = vsm.normalize_vector(vector)
+    # print("\nCosine Similarity")
+    vector_space = vsm.normalize_vector(vector_space)
     for d in doc:
         for d2 in doc:
-            if d != d2:
-                print(round(vsm.cosine_similarity(vector[d],vector[d2]),2), end=" ")
-        print()                
+            print(round(vsm.cosine_similarity(vector_space[d],vector_space[d2]),3), end=",")
+        print()
 
 
 if __name__ == "__main__":

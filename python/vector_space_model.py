@@ -11,11 +11,16 @@ def vector_length(v):
 
     return length
 
-def vector(d,query,pos,N):
+def vector(d,query,pos,N,max_f):
 
     vector = [0] * len(query)
-    for i in range(len(query)):
-        vector[i] = tfidf.tf_weight(d,query[i],pos) * tfidf.idf_weight(N,query[i],pos)
+    i = 0
+    for t in query:
+        if d in pos[t]:
+            vector[i] = len(pos[t][d]) # / max_f[t]  * tfidf.idf_weight(N,t,pos)
+        else:
+            vector[i] = 0
+        i = i + 1
 
     return vector
 
@@ -29,5 +34,10 @@ def normalize_vector(vector):
     return vector
 
 def cosine_similarity(v1,v2):
-    cs = numpy.dot(v1,v2) / ( vector_length(v1) * vector_length(v2) )
+    div = vector_length(v1) * vector_length(v2)
+    if div == 0:
+        cs = 0
+    else:
+        cs = numpy.dot(v1,v2) / div
+    # cs = math.cos( cs )
     return cs
