@@ -9,9 +9,12 @@ def main():
 
     # 1. Pre-processing
     doc = {}
-    for name in os.listdir("../dataset"):
-        f = open("../dataset/" + name).read()
-        doc[int(name.strip("hp").strip(".txt"))] = pp.preprocess(f)
+    i = 1
+    for name in os.listdir("../dataset2/txts"):
+        print(name)
+        f = open("../dataset2/txts/" + name).read()
+        doc[i] = pp.preprocess(f)
+        i = i + 1
 
     # 2. Query
     search = "magic owl wand study train school learn class fear teacher friend"
