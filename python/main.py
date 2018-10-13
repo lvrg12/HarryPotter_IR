@@ -1,5 +1,6 @@
 import os
 import math
+import PyPDF2
 import preprocessing as pp
 import term_frequency as tf
 import tfidf
@@ -10,10 +11,14 @@ def main():
     # 1. Pre-processing
     doc = {}
     i = 1
-    for name in os.listdir("../dataset2/txts"):
-        print(name)
-        f = open("../dataset2/txts/" + name).read()
-        doc[i] = pp.preprocess(f)
+    for name in os.listdir("../dataset2/pdfs"):
+        f = open("../dataset2/pdfs/" + name, 'rb')
+        pdfReader = PyPDF2.PdfFileReader(f)
+        text = ""
+        for page in range(pdfReader.numPages):
+            text = text + " " + pdfReader.getPage(page).extractText() 
+        
+        doc[i] = pp.preprocess(text)
         i = i + 1
 
     # 2. Query
@@ -36,7 +41,7 @@ def main():
     #         print( str(d) + ": " + str(tfidf.tf(t,d,pos)) + " ", end=" ")
     #     print()
 
-    # arrtmp = [0] * 57
+    # arrtmp = [0] * 130
     # for t in query:
     #     print(t, end=",")
     #     for d in range(len(arrtmp)):

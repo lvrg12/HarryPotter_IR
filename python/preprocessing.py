@@ -7,7 +7,6 @@ from nltk.stem.porter import PorterStemmer
 
 # preprocess of document
 def preprocess( doc ):
-    print("here")
     preprocessed = tokenize(doc)
     # print([w for w in preprocessed])
     preprocessed = normalize(preprocessed)
