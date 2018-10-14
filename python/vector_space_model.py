@@ -25,7 +25,6 @@ def vector(d,query,pos,N,max_f):
     return vector
 
 def normalize_vector(vector):
-
     for v in vector:
         for i in range(len(vector[v])):
             if vector_length(vector[v]) != 0:

@@ -1,5 +1,6 @@
 import os
 import math
+import unidecode
 import PyPDF2
 import preprocessing as pp
 import term_frequency as tf
@@ -16,7 +17,11 @@ def main():
         pdfReader = PyPDF2.PdfFileReader(f)
         text = ""
         for page in range(pdfReader.numPages):
-            text = text + " " + pdfReader.getPage(page).extractText() 
+            text = text + " " + pdfReader.getPage(page).extractText()
+
+        # if i == 1000 :
+        #     print(text)
+        #     break
         
         doc[i] = pp.preprocess(text)
         i = i + 1
