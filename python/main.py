@@ -6,6 +6,7 @@ import preprocessing as pp
 import term_frequency as tf
 import tfidf
 import vector_space_model as vsm
+import clustering as cl
 
 def main():
 
@@ -18,16 +19,12 @@ def main():
         text = ""
         for page in range(pdfReader.numPages):
             text = text + " " + pdfReader.getPage(page).extractText()
-
-        # if i == 1000 :
-        #     print(text)
-        #     break
         
         doc[i] = pp.preprocess(text)
         i = i + 1
 
     # 2. Query
-    search = "magic owl wand study train school learn class fear teacher friend"
+    search = "train book monster ghost wand spirit sad emotion dementor askaban prisoner black godfather griffin fly sentence"
     query = search.split(" ")
 
     # 3. TF and IDF
@@ -83,10 +80,19 @@ def main():
     # 7. Cosine Similarity
     # print("\nCosine Similarity")
     vector_space = vsm.normalize_vector(vector_space)
+
+    cos_sim_matrix = []
+    i = 0
     for d in doc:
+        cos_sim_matrix.append([])
         for d2 in doc:
-            print(round(vsm.cosine_similarity(vector_space[d],vector_space[d2]),3), end=",")
-        print()
+            sim = round(vsm.cosine_similarity(vector_space[d],vector_space[d2]),3)
+            cos_sim_matrix[i].append(sim)
+            # print(sim, end=",")
+        # print()
+        i = i + 1
+
+    print(cl.clust(cos_sim_matrix,5))
 
 
 if __name__ == "__main__":
