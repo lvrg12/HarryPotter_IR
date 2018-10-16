@@ -1,4 +1,5 @@
 import unidecode
+import string
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -46,7 +47,9 @@ def lemmatize( tokenized ):
 
 # stemming of document
 def stem( tokenized ):
-
     stemmer = PorterStemmer()
-    stemmed = [ str(stemmer.stem(w)) for w in tokenized ]
+    stemmed = [ str(stemmer.stem(w)) for w in tokenized if is_ascii(str(stemmer.stem(w))) ]
     return stemmed
+
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
