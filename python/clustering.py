@@ -1,40 +1,46 @@
 import statistics
+import vector_space_model as vsm
 
-def clust(matrix, k):
-    m = len(matrix)
+def clust(vectors, k):
 
-    n_cen = [10,27,45,73,110]
+    n_cen = [vectors[25],vectors[50],vectors[75],vectors[100],vectors[125]]
     # n_cen = [15,35,50,80,129]
     o_cen = [0] * k
 
     while o_cen != n_cen:
-        print(n_cen)
         o_cen = [c for c in n_cen]
 
         # form K clusters
         cluster = {}
         for c in range(k):
-            cluster[o_cen[c]] = []
+            cluster[c] = []
 
         # assign vector to closest centroid
-        for d in range(m):
+        for v in vectors:
             closest = o_cen[0]
-            for cen in o_cen:
-                if matrix[cen][d] > matrix[closest][d]:
-                    closest = cen
-            cluster[closest].append(d)
+            for c in o_cen:
+                if vsm.cosine_similarity(v,c) > vsm.cosine_similarity(v,closest):
+                    closest = c
+            cluster[o_cen.index(closest)].append(vectors.index(v))
         
         # recompute centroid of each cluster
         for i in range(k):
-            n_cen[i] = mean(cluster[o_cen[i]])
+            n_cen[i] = average(cluster[i],vectors)
 
     return cluster
 
 
-def mean( arr ):
-    sum = 0
-    for x in arr:
-        sum = sum + x
+def average( indexes, vectors ):
+    n = len(indexes)
+    centroid = [0] * len(vectors[0])
 
-    return int(sum/len(arr))
-    # return int(statistics.median(arr))
+    for c in range(len(vectors[0])):
+        sum = 0
+        for index in indexes:
+            sum = sum + vectors[index][c]
+        if n == 0:
+            centroid[c] = 0
+        else:
+            centroid[c] = sum/n
+
+    return centroid
