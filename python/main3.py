@@ -11,7 +11,7 @@ import clustering as cl
 
 def main():
 
-    # 1. Pre-processing
+    # 2. Pre-processing
     doc = {}
     N = 0
     # for name in sorted(os.listdir("../dataset2/pdfs")):
@@ -28,7 +28,7 @@ def main():
     #         text = text + " " + pdfReader.getPage(page).extractText()
     #     doc[N] = pp.preprocess(text)
 
-    # 2. TF and IDF
+    # 3. TF and IDF
     corpus = {}
     # for d in doc:
     #     for w in doc[d]:
@@ -41,7 +41,7 @@ def main():
     #             corpus[w][d] = 1
 
 
-    # 2. Vector Space
+    # 3. Vector Space
     if not os.path.exists("tf_vector.csv"):
         with open('tf_vector.csv', 'w', newline='') as csv_td:
             writer = csv.writer(csv_td)
@@ -60,21 +60,6 @@ def main():
             if row[0].isdigit():
                 vector = [ int(c) for c in row ]
                 vector_space.append(normalized(vector))
-
-    # 3. Cosine Similarity
-    if not os.path.exists("cos_sim.csv"):
-        with open('cos_sim.csv', 'w', newline='') as csv_cs:
-            writer = csv.writer(csv_cs)
-            i = 0
-            for v1 in vector_space:
-                row = []
-                for v2 in vector_space:
-                    sim = round(vsm.cosine_similarity(v1,v2),3)
-                    row.append(sim)
-                writer.writerow(row)
-
-    # 5. K-Means Clustering
-    # print(cl.clust(vector_space,5))
 
     # 4. P(c)
     with open('../locations.csv', newline='') as file:
@@ -98,6 +83,8 @@ def main():
         print( "P(" + c + ") =\t\t\t" + str(classes[c]) + "/" + str(total))
 
     print(p_c)
+
+    
 
 def normalized( vector ):
 
