@@ -13,32 +13,32 @@ def main():
 
     # 1. Pre-processing
     doc = {}
-    N = 0
-    for name in sorted(os.listdir("../dataset2/pdfs")):
+    # N = 0
+    # for name in sorted(os.listdir("../dataset2/pdfs")):
 
-        if( name == ".DS_Store"):
-            continue
+    #     if( name == ".DS_Store" or name == "hp3_22.pdf" or name == "hp4_37.pdf"):
+    #         continue
 
-        N = N + 1
-        f = open("../dataset2/pdfs/" + name, 'rb')
-        pdfReader = PyPDF2.PdfFileReader(f)
-        text = ""
-        print(name)
-        for page in range(pdfReader.numPages):
-            text = text + " " + pdfReader.getPage(page).extractText()
-        doc[N] = pp.preprocess(text)
+    #     N = N + 1
+    #     f = open("../dataset2/pdfs/" + name, 'rb')
+    #     pdfReader = PyPDF2.PdfFileReader(f)
+    #     text = ""
+    #     # print(name)
+    #     for page in range(pdfReader.numPages):
+    #         text = text + " " + pdfReader.getPage(page).extractText()
+    #     doc[N] = pp.preprocess(text)
 
     # 2. TF and IDF
     corpus = {}
-    for d in doc:
-        for w in doc[d]:
-            if w in corpus:
-                corpus[w][d] = corpus[w][d] + 1
-            else:
-                corpus[w] = {}
-                for i in range(N):
-                    corpus[w][i+1] = 0
-                corpus[w][d] = 1
+    # for d in doc:
+    #     for w in doc[d]:
+    #         if w in corpus:
+    #             corpus[w][d] = corpus[w][d] + 1
+    #         else:
+    #             corpus[w] = {}
+    #             for i in range(N):
+    #                 corpus[w][i+1] = 0
+    #             corpus[w][d] = 1
 
 
     # 2. Vector Space
@@ -74,7 +74,7 @@ def main():
                 writer.writerow(row)
 
     # 5. K-Means Clustering
-    print(cl.clust(vector_space,5))
+    # print(cl.clust(vector_space,5))
 
 def normalized( vector ):
 

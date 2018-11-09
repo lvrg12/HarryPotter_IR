@@ -38,5 +38,4 @@ def cosine_similarity(v1,v2):
         cs = 0
     else:
         cs = numpy.dot(v1,v2) / div
-    # cs = math.cos( cs )
     return cs

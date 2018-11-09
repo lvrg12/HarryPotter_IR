@@ -3,8 +3,10 @@ import vector_space_model as vsm
 
 def clust(vectors, k):
 
-    n_cen = [vectors[25],vectors[50],vectors[75],vectors[100],vectors[125]]
-    # n_cen = [15,35,50,80,129]
+    #n_cen = [vectors[25],vectors[50],vectors[75],vectors[100],vectors[125]]
+    #n_cen = [vectors[10],vectors[20],vectors[30],vectors[40],vectors[50],vectors[60],vectors[70],vectors[80],vectors[90],vectors[100]]
+    #n_cen = [ vectors[0], vectors[125] ]
+    n_cen = [ vectors[0], vectors[65], vectors[125] ]
     o_cen = [0] * k
 
     while o_cen != n_cen:

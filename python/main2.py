@@ -56,6 +56,8 @@ def main():
                 vector = [ int(c) for c in row ]
                 vector_space.append(normalized(vector))
 
+    print(vector_space[0])
+
     # 3. Cosine Similarity
     if not os.path.exists("cos_sim.csv"):
         with open('cos_sim.csv', 'w', newline='') as csv_cs:
@@ -69,7 +71,12 @@ def main():
                 writer.writerow(row)
 
     # 5. K-Means Clustering
-    print(cl.clust(vector_space,5))
+    # dictio = cl.clust(vector_space,3)
+    # for cluster in dictio:
+    #     row = []
+    #     for d in dictio[cluster]:
+    #         print(  d, end=',' )
+    #     print()
 
 def normalized( vector ):
 
