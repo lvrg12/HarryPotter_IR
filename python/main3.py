@@ -125,9 +125,6 @@ def main():
                 row2 = [ p_wc[c][w] for w in p_wc[c] ]
                 writer.writerow(row1 + row2)
 
-    
-
-    
 
 def normalized( vector ):
 
