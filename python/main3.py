@@ -156,12 +156,12 @@ def main():
         max_l = 0
         for c in classes:
             v = abs(math.log(p_c[c],1000) * multiplication( test_doc[d], p_wc[c] ))
-            # print( c + " \t\t " + str(v))
+            print( c + " \t\t " + str(v))
             if v > max_l:
                 max_l = v
                 mlc = c
         print(str(d) + " -> " + str(mlc))
-        # print()
+        print()
 
 
 
