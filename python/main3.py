@@ -122,11 +122,11 @@ def main():
         arr = sorted(arr,key=lambda x: x[1],reverse=True)[:150]
 
         p_wc_optimized[c] = {}
-        print(c)
+        # print(c)
         for t in arr:
+            # print(t[0])
             p_wc_optimized[c][t[0]] = t[1]
-
-    exit()
+        # print()
 
         # print(p_wc_optimized)
 
@@ -171,13 +171,17 @@ def main():
             N = N + 1
             test_doc_classes[N] = row[2]
 
-    print("doc,house,hogwards,outside")
+    # print("doc,house,hogwards,outside")
+    header = "doc,"
+    for c in classes:
+        header = header + c + ","
+    print(header)
     for d in test_doc:
         mlc = ""
         max_l = 0
         string = str(d)
         for c in classes:
-            v = abs(math.log(p_c[c],1500) * multiplication( test_doc[d], p_wc[c] ))
+            v = abs(math.log(p_c[c],1000) * multiplication( test_doc[d], p_wc[c] ))
             string = string + "," + str(v)
             if v > max_l:
                 max_l = v
@@ -192,7 +196,7 @@ def multiplication( d_corpus, c_corpus ):
     product = 1
     for w in d_corpus:
         if w in c_corpus and c_corpus[w] > 0:
-            product = product * math.log(c_corpus[w],1500)
+            product = product * math.log(c_corpus[w],1000)
             
     return product
     

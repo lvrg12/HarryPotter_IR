@@ -14,6 +14,11 @@ def preprocess( doc ):
     preprocessed = normalize(preprocessed)
     preprocessed = [ w for w in preprocessed if len(w) > 2 ]
 
+    skip = ["said", "look","back","could","would","around","will","like","though","they","still"
+            "what","well","think","right","know"]
+
+    preprocessed = [ w for w in preprocessed if w not in skip ]
+
     return preprocessed
 
 # tokenization of document
