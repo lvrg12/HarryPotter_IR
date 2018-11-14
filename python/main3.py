@@ -112,6 +112,26 @@ def main():
                 if doc_classes[d+1] == c:
                     n = n + tf_vector[d][w]
             p_wc[c][vocabulary[w]] = (n + 1) / ( class_word_count[c] + len(vocabulary) )
+    
+    p_wc_optimized = {}
+    for c in p_wc:
+        arr = []
+        for w in p_wc[c]:
+            if len(w) > 3:
+                arr.append((w,p_wc[c][w]))
+        arr = sorted(arr,key=lambda x: x[1],reverse=True)[:150]
+
+        p_wc_optimized[c] = {}
+        print(c)
+        for t in arr:
+            p_wc_optimized[c][t[0]] = t[1]
+
+    exit()
+
+        # print(p_wc_optimized)
+
+    
+
 
 
     # 6. Posterior probabilities
@@ -151,17 +171,19 @@ def main():
             N = N + 1
             test_doc_classes[N] = row[2]
 
+    print("doc,house,hogwards,outside")
     for d in test_doc:
         mlc = ""
         max_l = 0
+        string = str(d)
         for c in classes:
-            v = abs(math.log(p_c[c],1200) * multiplication( test_doc[d], p_wc[c] ))
-            print( c + " \t\t " + str(v))
+            v = abs(math.log(p_c[c],1500) * multiplication( test_doc[d], p_wc[c] ))
+            string = string + "," + str(v)
             if v > max_l:
                 max_l = v
                 mlc = c
-        print(str(d) + " -> " + str(mlc))
-        print()
+
+        print(string)
 
 
 
@@ -170,8 +192,7 @@ def multiplication( d_corpus, c_corpus ):
     product = 1
     for w in d_corpus:
         if w in c_corpus and c_corpus[w] > 0:
-            product = product * math.log(c_corpus[w],1200)
-            # print(math.log(c_corpus[w],1000))
+            product = product * math.log(c_corpus[w],1500)
             
     return product
     
