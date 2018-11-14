@@ -155,7 +155,7 @@ def main():
         mlc = ""
         max_l = 0
         for c in classes:
-            v = abs(math.log(p_c[c],1000) * multiplication( test_doc[d], p_wc[c] ))
+            v = abs(math.log(p_c[c],1200) * multiplication( test_doc[d], p_wc[c] ))
             print( c + " \t\t " + str(v))
             if v > max_l:
                 max_l = v
@@ -170,7 +170,7 @@ def multiplication( d_corpus, c_corpus ):
     product = 1
     for w in d_corpus:
         if w in c_corpus and c_corpus[w] > 0:
-            product = product * math.log(c_corpus[w],1000)
+            product = product * math.log(c_corpus[w],1200)
             # print(math.log(c_corpus[w],1000))
             
     return product
