@@ -69,7 +69,7 @@ def main():
     # 4. P(c)
     doc_count = 1
     doc_classes = {}
-    with open('../locations.csv', newline='') as file:
+    with open('../locations_training2.csv', newline='') as file:
         reader = csv.reader(file)
         classes = {}
         total = 0
@@ -115,7 +115,8 @@ def main():
 
 
     # 6. Posterior probabilities
-    with open('pp.csv', 'w', newline='') as f:
+    if not os.path.exists("pp.csv"):
+        with open('pp.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             h1 = ['class','p(c)']
             h2 = [ w for w in vocabulary ]
@@ -124,6 +125,57 @@ def main():
                 row1 = [c, p_c[c]]
                 row2 = [ p_wc[c][w] for w in p_wc[c] ]
                 writer.writerow(row1 + row2)
+
+    # Classification
+    test_doc = {}
+    N = 0
+    for name in sorted(os.listdir("../dataset2/dataset_test")):
+        if( name == ".DS_Store" ):
+            continue
+        N = N + 1
+        f = open("../dataset2/dataset_test/" + name, 'rb')
+        pdfReader = PyPDF2.PdfFileReader(f)
+        text = ""
+        for page in range(pdfReader.numPages):
+            text = text + " " + pdfReader.getPage(page).extractText()
+        test_doc[N] = pp.preprocess(text)
+
+    test_doc_classes = {}
+    N = 0
+    with open('../locations_test2.csv', newline='') as file:
+        reader = csv.reader(file)
+
+        for row in reader:
+            if( row[2] == "place" ):
+                continue
+            N = N + 1
+            test_doc_classes[N] = row[2]
+
+    for d in test_doc:
+        mlc = ""
+        max_l = 0
+        for c in classes:
+            v = abs(math.log(p_c[c],1000) * multiplication( test_doc[d], p_wc[c] ))
+            # print( c + " \t\t " + str(v))
+            if v > max_l:
+                max_l = v
+                mlc = c
+        print(str(d) + " -> " + str(mlc))
+        # print()
+
+
+
+def multiplication( d_corpus, c_corpus ):
+    # d_corpus = list(set(d_corpus))
+    product = 1
+    for w in d_corpus:
+        if w in c_corpus and c_corpus[w] > 0:
+            product = product * math.log(c_corpus[w],1000)
+            # print(math.log(c_corpus[w],1000))
+            
+    return product
+    
+
 
 
 def normalized( vector ):

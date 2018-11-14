@@ -11,6 +11,8 @@ def preprocess( doc ):
     preprocessed = normalize(preprocessed)
     preprocessed = lemmatize(preprocessed)
     preprocessed = stem(preprocessed)
+    preprocessed = normalize(preprocessed)
+    preprocessed = [ w for w in preprocessed if len(w) > 2 ]
 
     return preprocessed
 
