@@ -11,7 +11,7 @@ import clustering as cl
 
 def main():
 
-    # 1. Pre-processing
+    # 2. Pre-processing
     doc = {}
     N = 0
     # for name in sorted(os.listdir("../dataset2/pdfs")):
@@ -28,7 +28,7 @@ def main():
     #         text = text + " " + pdfReader.getPage(page).extractText()
     #     doc[N] = pp.preprocess(text)
 
-    # 2. TF and IDF
+    # 3. TF and IDF
     corpus = {}
     # for d in doc:
     #     for w in doc[d]:
@@ -41,7 +41,7 @@ def main():
     #             corpus[w][d] = 1
 
 
-    # 2. Vector Space
+    # 3. Vector Space
     if not os.path.exists("tf_vector.csv"):
         with open('tf_vector.csv', 'w', newline='') as csv_td:
             writer = csv.writer(csv_td)
@@ -53,30 +53,22 @@ def main():
                     row.append(corpus[w][d])
                 writer.writerow(row)
 
+    vocabulary = []
+    tf_vector = []
     vector_space = []
     with open('tf_vector.csv', newline='') as csv_td:
         reader = csv.reader(csv_td)
         for row in reader:
             if row[0].isdigit():
                 vector = [ int(c) for c in row ]
+                tf_vector.append(vector)
                 vector_space.append(normalized(vector))
-
-    # 3. Cosine Similarity
-    if not os.path.exists("cos_sim.csv"):
-        with open('cos_sim.csv', 'w', newline='') as csv_cs:
-            writer = csv.writer(csv_cs)
-            i = 0
-            for v1 in vector_space:
-                row = []
-                for v2 in vector_space:
-                    sim = round(vsm.cosine_similarity(v1,v2),3)
-                    row.append(sim)
-                writer.writerow(row)
-
-    # 5. K-Means Clustering
-    # print(cl.clust(vector_space,5))
+            else:
+                vocabulary = [ w for w in row ]
 
     # 4. P(c)
+    doc_count = 1
+    doc_classes = {}
     with open('../locations.csv', newline='') as file:
         reader = csv.reader(file)
         classes = {}
@@ -85,6 +77,9 @@ def main():
 
             if( row[2] == "place" ):
                 continue
+
+            doc_classes[doc_count] = row[2]
+            doc_count = doc_count + 1
 
             total = total + 1
             if row[2] in classes:
@@ -95,9 +90,41 @@ def main():
     p_c = {}
     for c in classes:
         p_c[c] = classes[c] / total
-        print( "P(" + c + ") =\t\t\t" + str(classes[c]) + "/" + str(total))
+        # print( "P(" + c + ") =\t\t\t" + str(classes[c]) + "/" + str(total))
 
-    print(p_c)
+    # 5. P(w|c)
+    p_wc = {}
+    class_word_count = {}
+
+    # counting words in classes
+    for c in classes:
+        class_word_count[c] = 0
+        for w in range(len(vocabulary)):
+            for d in range(len(doc_classes)):
+                if doc_classes[d+1] == c:
+                    class_word_count[c] = class_word_count[c] + tf_vector[d][w]
+
+    for c in classes:
+        p_wc[c] = {}
+        for w in range(len(vocabulary)):
+            n = 0
+            for d in range(len(doc_classes)):
+                if doc_classes[d+1] == c:
+                    n = n + tf_vector[d][w]
+            p_wc[c][vocabulary[w]] = (n + 1) / ( class_word_count[c] + len(vocabulary) )
+
+
+    # 6. Posterior probabilities
+    with open('pp.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            h1 = ['class','p(c)']
+            h2 = [ w for w in vocabulary ]
+            writer.writerow(h1 + h2)
+            for c in classes:
+                row1 = [c, p_c[c]]
+                row2 = [ p_wc[c][w] for w in p_wc[c] ]
+                writer.writerow(row1 + row2)
+
 
 def normalized( vector ):
 
